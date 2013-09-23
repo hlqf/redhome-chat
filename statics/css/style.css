@@ -1,0 +1,330 @@
+
+.bk{
+	 background: none;
+     border: 0;
+     clear: both;
+     display: block;
+     float: none;
+     font-size: 0;
+     margin: 0;
+     padding: 0;
+     overflow: hidden;
+     visibility: hidden;
+     width: 0;
+     height: 0;
+}
+body,html{
+	width:100%;
+	height:100%;
+	/*background:#e0dfdd;*/
+	overflow:auto;
+}
+body{
+	background:url('../image/bg.jpg') 50% 50% no-repeat;
+	overflow-y:hidden;
+}
+.skin0{
+	background-image:url("../image/bg.jpg");
+}
+.skin1{
+	background-image:url("../image/1.jpg");
+}
+.skin2{
+	background-image:url("../image/2.jpg");
+}
+.header{
+	width:100%;
+	background:#FFF;
+}
+.headerBg{
+	width:930px;
+	
+	margin:0 auto;
+	background:url("../image/header.png") 50% 50% no-repeat;
+}
+.mainer{
+	width:100%;
+	height:100%;
+	/*background:#e0dfdd;*/
+}
+.mainer-sec{
+	width:930px;
+	height:90%;
+	margin:0 auto;
+}
+.userList{
+	width:150px;
+	height:70%;
+	float:right;
+	background:url('../image/userListBg.png') repeat-y 0 0;
+	overflow-y:auto;
+	overflow-x:hidden;
+	background:#FFF;
+	border:1px #e9e9e9 solid;
+}
+#demo{
+	width:770px;
+	height:70%;
+	float: left;
+	background:#FFF;
+	border:1px solid #cdcdcd;
+	overflow-y: hidden;
+	overflow-x:hidden;
+}
+#J-speechArea{
+	width:inherit;
+	height:12%;
+	margin:3px auto;
+}
+#butt_send{
+	width:70px;
+	height:80%;
+	background:#f5f5f5;
+	float:right;
+	color:#FFF;
+	cursor: pointer;
+	float:right;
+	text-align:center;
+	font-size:18px;
+	font-family:\5FAE\8F6F\96C5\9ED1;
+	background:-webkit-gradient(linear,left bottom,left top,color-stop(0.08, rgb(30,206,219)),color-stop(0.54, rgb(57,248,255)));
+	background:-moz-linear-gradient(center bottom,rgb(30,206,219) 8%,rgb(57,248,255) 54%);
+	-webkit-box-shadow: 5px 5px 7px #111;
+	background-image: linear-gradient(bottom, rgb(91,157,207) 7%, rgb(91,172,199) 51%, rgb(91,157,207) 82%);
+background-image: -o-linear-gradient(bottom, rgb(91,157,207) 7%, rgb(91,172,199) 51%, rgb(91,157,207) 82%);
+background-image: -moz-linear-gradient(bottom, rgb(91,157,207) 7%, rgb(91,172,199) 51%, rgb(91,157,207) 82%);
+background-image: -webkit-linear-gradient(bottom, rgb(91,157,207) 7%, rgb(91,172,199) 51%, rgb(91,157,207) 82%);
+background-image: -ms-linear-gradient(bottom, rgb(91,157,207) 7%, rgb(91,172,199) 51%, rgb(91,157,207) 82%);
+
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.07, rgb(91,157,207)),
+	color-stop(0.51, rgb(91,172,199)),
+	color-stop(0.82, rgb(91,157,207))
+);
+border:1px solid #36aaf4;
+display: table-cell;
+	background-color: #759AE9;
+    background-image: -moz-linear-gradient(center top , #759AE9 0%, #376FE0 50%, #1A5AD9 50%, #2463DE 100%);
+     border-color: #1F58CC #1B4DB3 #174299;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+     box-shadow: 0 0 2px 0 rgba(57, 140, 255, 0.8) inset;
+}
+.userList h1{
+	display: block;
+	width:inherit;
+	height:30px;
+	background:#e9e9e9;
+	font-family:SimSun;
+	font-size:14px;
+	line-height:30px;
+	text-align:center;
+	color:#22a5d2;
+	border-width:0 0 1px 0;
+	border-style:solid;
+	border-color:#e9e9e9;
+}
+#J-userNum{
+	color:#ff6100;
+}
+#J-userList li{
+	display: block;
+	width:148px;
+	margin:0 auto;
+	font-family:SimSun;
+	font-size:14px;
+	color:#999999;
+	border-width:0 1px 1px 1px;
+	border-color:#e9e9e9;
+	border-style:solid;
+	padding-left:1px;
+}
+#J-userList li:hover{
+	background:#f3f3f3;
+	color:#ff6600;
+}
+#demo h1{
+	font-size:14px;
+	color:#22a5d2;
+	font-family:SimSun;
+	padding-left:10px;
+	padding-top:10px;
+	font-family:SimSun;
+}
+#demo p{
+	padding-left:10px;
+	font-size:14px;
+	color:#000000;
+	font-family:\5FAE\8F6F\96C5\9ED1;
+}
+#message{
+	display:block;
+	width:850px; 
+	height:80%;
+	float:left;
+	font-size:16px;
+	font-family:\5FAE\8F6F\96C5\9ED1;
+	resize:none;
+}
+#login{
+	width:611px;
+	margin:0 auto;
+}
+#login span{
+	font-size:62px;
+	font-family:\5FAE\8F6F\96C5\9ED1;
+	color:#FFF;
+	text-shadow: 3px 3px 7px #111;
+}
+#news{
+	width:775px;
+	height:20px;
+	background:#fffc9c;
+	display: table-cell;
+	vertical-align: middle;
+	text-align:center;
+}
+#posts{
+	overflow-y: auto;
+	height:60%;
+}
+#right{
+	font-family:\5FAE\8F6F\96C5\9ED1;
+	text-align:center;
+	color:#FFF;
+}
+.posts:hover{
+	background:#dddeee;
+	opacity: 0.8;
+	-moz-opacity: 0.8;
+	filter:alpha(opacity=80);
+}
+#username{
+	width:250px;
+	height:39px;
+	background:url('../image/txt.png') 0 0 no-repeat;
+	border:0px;
+	color:#FFF;
+	font-size:22px;
+	font-family:\5FAE\8F6F\96C5\9ED1;
+	padding-left:15px;
+	margin-right:15px;
+	margin-left: 89px;
+}
+#butt_login{
+	width:124px;
+	height:40px;
+	border:0px;
+	background:url('../image/btn.png') 0 0 no-repeat;
+	cursor: pointer;
+	margin-left: 30px;
+}
+.tip{
+	display: none;
+	width:100%;
+	height:40px;
+	background:#fffc9c;
+	border:1px solid #de894a;
+	font-size:18px;
+	font-family:\5FAE\8F6F\96C5\9ED1;
+	text-align:center;
+	line-height:40px;
+	color:#5f5f5f;
+}
+#x{
+	cursor: pointer;
+	width:35px;
+	height:35px;
+	background:url('../image/close.jpg') no-repeat 0 0;
+	float: right;
+	margin-top:2px;
+	margin-left:-100px;
+	margin-right:100px;
+}
+
+#demo,.userList,#message,#butt_send,#word_num{
+	opacity: 0.8;
+	-moz-opacity: 0.8;
+	filter:alpha(opacity=8);
+}
+#red_link{
+	display: block;
+	width:123px;
+	height: 100%;
+	font-size:14px;
+	color:#FF6500;
+	line-height:100%;
+	text-decoration:none;
+	text-align:center;
+	float: right;
+}
+#tip_link{
+	padding-left:8px;
+	padding-right:6px;
+	background:#fffeba;
+	position: relative;
+}
+#chat_link{
+	display: block;
+	width:230px;
+	height: 100%;
+	font-size:14px;
+	color:#FF6500;
+	line-height:100%;
+	text-decoration:none;
+	text-align:center;
+	float: left;
+}
+#tip_close{
+	position: absolute;
+	right:5px;
+}
+.feed {
+	position: relative;
+	float: right;
+	margin-top: -20px;
+	z-index: 999;
+}
+.feed a {
+	padding-right: 5px;
+}
+#vip_posts {
+	overflow-y: auto;
+	height: 35%;
+	border-bottom: 1px outset #0cc;
+}
+.talking {
+	display: block;
+	width: 611px;
+	height: 71px;
+	background: url('../image/talking.png');
+	margin-top: 100px;
+}
+.dang {
+	display: block;
+	width: 456px;
+	height: 25px;
+	background: url('../image/dang.png');
+	margin: 0 auto;
+	margin-top: 30px;
+	margin-bottom: 100px;
+}
+.logo {
+	display: block;
+	width: 280px;
+	height: 53px;
+	background: url('../image/logo.png');
+}
+.redhome {
+	position: fixed;
+	right: 85px;
+	bottom: 85px;
+	color: #fff;
+}
+.redhome a {
+	color: #fff;
+}

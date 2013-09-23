@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" type="text/css" href="/css/style.css" media="all">
+	<link rel="stylesheet" type="text/css" href="/css/reset.css" media="all">
+	<script type="text/javascript" src="/js/jquery-min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<title>红色家园聊天室</title>
+	<link rel="Shortcut Icon " href="/image/favicon.ico"/>
+	<link rel="Bookmark" href="/image/favicon.ico"> 
+</head>
+<body class="">
+	<div class="tip" id="tip">请使用Chrome或者Firefox，获得更佳的浏览体验 <a href="http://www.google.cn/chrome/eula.html">点击下载Chrome</a>  <a href="http://firefox.com.cn/download/">点击下载Firefox</a>  <span id="x"></span>	</div>
+	<div class="logo"></div>
+	<div class="header"><div class="headerBg"><a href="http://chat.redhome.cc" id="chat_link"></a><a  href="http://www.redhome.cc" id="red_link"></a></div></div>
+	<div class="mainer">
+		<div id="login">
+			<div class="talking"></div>
+			<div class="dang"></div>
+			<!-- <span>Talking Together</span> -->
+			 <input type="text" id="username" value="" placeholder="请输入你的用户名" /><input type="button" value="" id="butt_login"/><div id="userError"></div><br><br>
+			 <span style="font-size:15px;color:#fff;text-shadow:none;margin-left:103px;">开放的聊天室，无需注册，只需要输入一个独一无二的名字！</span>
+			 <div class="redhome">红色家园出品  ︳<a href="http://bbs.redhome.cc/" target="_blank">家园论坛</a> <a href="http://bbs.redhome.cc/forum.php?mod=viewthread&tid=638677" target="_blank">官方微信</a> <a href="http://weibo.com/hduredhome" target="_blank">官方微博</a></div>
+		</div>
+		<br>
+		<div class="mainer-sec" id="mainer-sec" style="display:none;">
+			<div class="userList">
+				
+				<div id="tip_link">
+					<a href="#" style="color:red;font-size:18px;" id="tip_close">关闭</a>
+					<p style="color:red;font-size:18px;">Tips:</p>
+					<p>1、此聊天室采用无刷新技术，刷新之后需要重新登录，且会丢失之前的聊天记录。<strong>所以请不要刷新</strong>。</p>
+					<p>2、输入完消息按回车键可以直接发送</p>
+					<p>3、发送消息的间隔为2s，请不要频繁发送</p>
+					<p>4、点击本窗口可以关闭本提示</p>
+				</div>
+				<h1>共<span id="J-userNum"></span>名网友在线</h1>
+				<ul id="J-userList">
+				</ul>
+				
+			</div>
+			<div id="demo">
+				<span id="news">欢迎您来到红色家园聊天室</span>
+				<div id="vip_posts"></div>
+				<div id="posts"></div>
+			</div>
+			<div class="bk"></div>
+		
+			<div id="J-speechArea">
+				<div style="height:20px; background: none repeat scroll 0% 0% #FFF; width:100%;margin:0 0 3px 0;" id="word_num">&nbsp;&nbsp;&nbsp;您还可以输入 <span id="words">400</span> 	字　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　这里还可以换背景哦！<a href="skin0" class="bg_click">默认背景</a> <a href="skin1" class="bg_click">背景一</a> <a href="skin2" class="bg_click">背景二</a>&nbsp;&nbsp;&nbsp;输入完后，按回车也可以发送</div>
+				<textarea type="text" id="message" onkeydown='countChar("message","words");' onkeyup='countChar("message","words");'></textarea>
+				<div id="butt_send" style="position:relative;"><p style="position:absolute;top:30%;width:70px;">发送</p></div>
+			</div>
+			<div class="bk"></div>
+			<div id="right" style="color:#eee;">
+				版本：2.0 制作：钱汉栋 基于戴圣翔、章文炳制作的第一版 设计：方洪珏 沈俊飞 金锦前   今天是</div>
+			<div class="bk"></div>
+		</div>
+		<div class="bk"></div>	
+	</div>
+	<script>
+	var date = new Date();
+	var mon = date.getMonth() + 1;
+	var day = date.getDate();
+	var weekday = ["日", "一", "二", "三", "四", "五", "六"];
+	var today = mon + "月" + day + "日" + " 星期" + weekday[date.getDay()];
+	console.log(today + "\n欢迎来到家园聊天室！");
+	document.getElementById("right").innerHTML += today;
+	</script>
+
+<script>
+$('.bg_click').each(function(){
+	$(this).click(function(){
+		var _className = $(this).attr('href');
+		//$("body").className = _className;
+		$("body").attr("class",_className);
+		//console.log($(this).attr('href'));
+		return false;
+	});
+});
+$('#tip_close').click(function(){
+	$('#tip_link').slideUp(500);
+	return false;
+});
+$('#x').click(function(){ //ie浏览器提示事件
+	$('#tip').slideUp(1000);
+});
+var isIE=!!window.ActiveXObject;
+if(isIE){
+	$('.tip').slideDown(1000);
+	$('#username').focus();
+	$('#username').blur(function(){//对ie的placeholder事件进行弥补
+		if($('#username').val() == ''){
+			$('#username').val('请输入你的用户名');
+		}
+	});
+	$('#username').click(function(){
+		if($('#username').val() == '请输入你的用户名'){
+			$('#username').val('');
+		}
+	});
+	$('#butt_send').css('color','#6bc2ff');
+}
+$('#username').focus();
+var thekey = 1;//k 用来判断按回车后，如果间隔时间大于规定，则表示发送成功，k置于1，文本框清空。
+function scroll(){
+	var scrollHeight = document.getElementById('posts').scrollHeight;
+	var vip_scrollHeight = document.getElementById('vip_posts').scrollHeight;
+	//console.log('after'+scrollHeight);
+	//var clientHeight = document.getElementById('demo').clientHeight;
+	$('#vip_posts').scrollTop(vip_scrollHeight);
+	$('#posts').scrollTop(scrollHeight);
+}
+function countChar(textareaName,spanName)
+{ 
+ 	document.getElementById("words").innerHTML = 400 - document.getElementById("message").value.length;
+}  
+function cutstr(str,len)  
+{  
+   var str_length = 0;  
+   var str_len = 0;  
+      str_cut = new String();  
+      str_len = str.length;  
+      for(var i = 0;i<str_len;i++)  
+     {  
+        a = str.charAt(i);  
+        str_length++;  
+        if(escape(a).length > 4)  
+        {  
+         //中文字符的长度经编码之后大于4  
+         str_length++;  
+         }  
+         str_cut = str_cut.concat(a);  
+         if(str_length>=len)  
+         {  
+         str_cut = str_cut.concat("...");  
+         return str_cut;  
+         }  
+    }  
+    //如果给定字符串小于指定长度，则返回源字符串；  
+    if(str_length<len){  
+     return  str;  
+    }  
+}  
+		var url = window.location.protocol + '//' + window.location.host;
+		//alert(url);
+		var socket = io.connect(url);
+		//var username;
+		var userList;
+		var hasLiked = [-1];
+		var timebreak = 2;
+		var refreshtime = 10000;
+		var d = new Date();
+		var t = Math.round(d.getTime()/1000);
+		
+		socket.on('userlist', function(data) {
+			userList = data;
+			//console.log(userList);
+			$('#J-userList').html('');
+			$('#J-userNum').html(data.length);
+			for (var i in data) {
+				if (data[i].isVIP) {
+					var li = '<li alt="'+data[i].username+'" style="color:#f00;font-weight:bold;">&nbsp;&nbsp;'+cutstr(data[i].username,12)+'&nbsp;<img src="/image/vip.png" alt="" style="margin-top: -1px;"/></li>';
+					$(li).prependTo('#J-userList');
+				}
+				else {
+					var li = '<li alt="'+data[i].username+'">&nbsp;&nbsp;'+cutstr(data[i].username,12)+'</li>';
+					$(li).appendTo('#J-userList');
+				}
+			}
+		});
+		
+		socket.on('notice', function(data){
+			//console.log(data);
+			$('#news').text('公告:'+data);
+		});
+		
+		socket.on('msg', function (data) {
+			//console.log(data.id);
+			if (chkVIP(data.username)) {
+				var div = "<div id='posts_" + data.id + "' class='posts'><h1><span style='color: #f00;'>"+cutstr(data.username,20)+"</span>&nbsp;<img src=\"/image/vip.png\" alt=\"\" style='margin-top:-3px;'/>&nbsp;&nbsp;"+data.time+"</h1>"+"<p>"+cutstr(data.msg,800)+"</p><span class='feed'><a id='reply_" + data.id + "' href='javascript:void(0);' onclick='reply("+ data.id +")'>回复</a><a class='likeit_" + data.id + "' href='javascript:void(0);' onclick='likeit("+ data.id +")'>赞(0)</a></span></div>";
+				$(div).appendTo('#vip_posts');
+			}
+			else
+				var div = "<div  id='posts_" + data.id + "' class='posts'><h1>"+cutstr(data.username,20)+"&nbsp;&nbsp;"+data.time+"</h1>"+"<p>"+cutstr(data.msg,800)+"</p><span class='feed'><a id='reply_" + data.id + "' href='javascript:void(0);' onclick='reply("+ data.id +")'>回复</a><a class='likeit_" + data.id + "' href='javascript:void(0);' onclick='likeit("+ data.id +")'>赞(0)</a></span></div>";
+			//console.log(document.getElementById('demo').scrollHeight);
+			$(div).appendTo('#posts'); //fadeIn();
+			scroll();
+			//scroll();
+			//div.appendTo('#demo').fadeIn();
+		});
+		
+		socket.on('likeitList', function(data) {
+			//console.log(data);
+			for (var i in data) {
+				$(".likeit_" + i).html("赞(" + data[i] + ")");
+			}
+		});
+		
+		function chkUsername(data) {
+			//var flag = 0;
+			for (var i in userList) {
+				if (userList[i].username == data) {
+					//flag = 1;
+					//break;
+					return "Guest_" + Math.round(Math.random() * 10000);
+				}
+			}
+			return data;
+		}
+		
+		function chkVIP(data) {
+			for (var i in userList) {
+				if (userList[i].username == data) {
+					if (userList[i].isVIP)
+						return true;
+					else
+						return false;
+				}
+			}
+			return false;
+		}
+		
+		function likeit(data) {
+			for (var i in hasLiked) {
+				//console.log(hasLiked);
+				if (hasLiked[i] == data) {
+					return false;
+				}
+			}
+			socket.emit('likeit', data);
+			hasLiked.push(data);
+		}
+		
+		function reply(data) {
+			//console.log($("#posts_" + data + " h1").text());
+			var username = $("#posts_" + data + " h1").text();
+			var content = $("#posts_" + data + " p").text();
+			$('#message').val('回复：“' + username + '\n    ' + content + '\n”\n');
+			var msgLen = $('#message').val().length;
+			//console.log(msgLen);
+			$('#message').focus();
+			$('#message')[0].setSelectionRange(msgLen, msgLen);
+			$('#message')[0].scrollTop = $('#message')[0].scrollHeight;
+		}
+		
+		$(function() {
+			$('#butt_login').click(function () {
+				if($('#username').val() == ''  || $('#username').val() == '请输入你的用户名'){
+				}else{
+					$("#login").slideUp(1000,function(){
+						$("#mainer-sec").slideDown(1000,function(){$('#message').focus()});
+					});
+					var username = chkUsername($('#username').val());
+					socket.emit('vip_login', cutstr(username, 30));
+				}
+			});
+			$('#username').keydown(function(event){
+				if(event.keyCode == 13){
+					if($('#username').val() == '' || $('#username').val() == '请输入你的用户名'){
+					}else{
+						$("#login").slideUp(1000,function(){
+							$("#mainer-sec").slideDown(1000,function(){$('#message').focus()});
+						});
+						var username = chkUsername($('#username').val());
+						socket.emit('vip_login', cutstr(username, 30));
+					}	
+				}
+			});
+			
+			$('#message').keydown(function(event){
+				if(event.keyCode == 13){
+					if($('#message').val() != "" && parseInt($("#words").html()) >= 0){
+					var d2 = new Date;
+					var t1 =Math.round(d2.getTime()/1000);
+					var t2 = t;
+					if(t1-t2 >=parseInt(timebreak) || z ==1){
+						k = 1;
+						t = t1;
+						z = 2;
+						//console.log($('#message').val());
+						socket.emit('msg', cutstr($('#message').val(),800));
+						$('#message').val('');
+						return false;
+					}else{
+						k = 0;
+						var div = "<div  class='posts'  style='font-size:18px;color:red;' >---------------发言间隔时间为"+timebreak+"秒---------------------------------------------------------</div>";
+						$(div).appendTo('#posts');
+						scroll();
+						return false;
+					}
+				}else{
+					if(parseInt($("#words").html()) >= 0){
+						alert('输入内容不能为空');
+						$('#message').val('');
+						return false;
+					}else{
+						alert('字数不能超过四百字');
+						return false;
+					}
+					return false;
+				}
+				}
+			});
+			$('#butt_send').click(function () {
+				if($('#message').val() != ""  && parseInt($("#words").html()) >= 0){
+					var d2 = new Date;
+					var t1 =Math.round(d2.getTime()/1000);
+					var t2 = t;
+					if(t1-t2 >=parseInt(timebreak) || z ==1){
+						k = 1;
+						t = t1;
+						z = 2;
+						//console.log($('#message').val());
+						socket.emit('msg', cutstr($('#message').val(),800));
+						//socket.emit('userlist');
+						$('#message').val('');
+						$("#words").html("400");
+					}else{
+						k = 0;
+						var div = "<div style='font-size:18px;color:red;' class='posts'>---------------------------发言间隔时间为"+timebreak+"秒-----------------------</div>";
+						$(div).appendTo('#posts');
+						scroll();
+					}
+				}else{
+					if(parseInt($("#words").html()) >= 0){
+						alert('输入内容不能为空');
+						$('#message').val('');
+					}else{
+						alert('字数不能超过四百字');
+					}
+				}
+				
+			});
+			socket.emit('user');
+
+			window.onbeforeunload = function() {
+				return "确认离开红色家园聊天室么？离开聊天室，聊天记录和用户名可能会丢失";
+			}
+			window.onunload = function() {
+				//socket.emit('logout', username);
+			}
+		});
+		
+</script>
+</body>
+</html>

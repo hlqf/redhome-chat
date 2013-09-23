@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>红色家园聊天室管理后台</title>
+	
+	<script type="text/javascript" src="/jquery.min.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script>
+		var url = window.location.protocol + '//' + window.location.host;
+		var socket = io.connect(url);
+		var info;
+		var info2;
+		
+		socket.on('userlist', function(data) {
+			$('#onlinelists').empty();
+			for(var i in data){
+				var ip = data[i].clientIP;
+				ip = '\'' + ip + '\'';
+				//console.log(data[i].clientIP);
+				if (data[i].isVIP) {
+					info = '<li style="color:#FFA500;" id="onlineUserName' + data[i].clientID + '">昵称:&nbsp;&nbsp;<b>' + data[i].username + '</b><br>客户端ID:&nbsp;&nbsp;' + data[i].clientID + '<br>连接端IP:&nbsp;&nbsp;' + data[i].clientIP + '<br><br><a href="javascript:void(0);" onclick="forbidTA(\''+ data[i].username + '\');">禁止此IP的用户登录</a>&nbsp;&nbsp;&nbsp;' + '</li>';
+					$('#onlinelists').prepend(info);
+				}
+				else {
+					info = '<li id="onlineUserName' + data[i].clientID + '">昵称:&nbsp;&nbsp;<b>' + data[i].username + '</b><br>客户端ID:&nbsp;&nbsp;' + data[i].clientID + '<br>连接端IP:&nbsp;&nbsp;' + data[i].clientIP + '<br><br><a href="javascript:void(0);" onclick="forbidTA(\''+ data[i].username + '\');">禁止此IP的用户登录</a>&nbsp;&nbsp;&nbsp;' + '</li>';
+					$('#onlinelists').append(info);
+				}
+			}
+		});
+		
+		socket.on('blacklist', function(data) {
+			$('#forbiddenlists').empty();
+			for(var i in data){
+				info2 = data[i].username + '<br>' + data[i].clientIP + '<br><a href="javascript:void(0);" onclick="delBlack(\''+ data[i].username + '\');">删除黑名单</a><br><br>';
+				$('#forbiddenlists').append(info2);
+			}
+		});
+		
+		socket.on('blackwords', function(data) {
+			$('#blackwords').empty();
+			for (var i in data) {
+				var info3 = data[i] + '<span style="color:#999;">、</span>';
+				$('#blackwords').append(info3);
+			}
+		});
+		
+		function forbidTA(data) {
+			socket.emit('blackit', data);
+		}
+		
+		function delBlack(data) {
+			socket.emit('delblackuser', data);
+		}
+		
+		function refresh() {
+			socket.emit('admin');
+		}
+		setInterval(refresh, 10000);
+		
+		$(function() {
+			$("#butt_send").click(function() {
+				socket.emit('notice', $('#message').val());
+				$('#message').val('');
+			});
+			$("#butt_bw").click(function() {
+				socket.emit('addblackword', $('#blackword').val());
+				$('#blackword').val('');
+			});
+			refresh();
+		});
+
+	</script>
+	
+	<style type="text/css">
+		.wind{
+			float: left;
+			width: 500px;
+			padding: 20px;
+			background-color: #EAEAEA;
+			margin-right:20px;
+		}
+		#control{
+			width:100%;
+			margin-bottom: 20px;
+		}
+		#onlinelists li{
+			padding:10px;
+		}
+		#onlinelists li:hover{
+			background-color: #E5EEF9;
+			border:2px solid #1672F4;
+		}
+	</style>
+</head>
+<body>
+<div class="wind" id="control">
+<b>系统操作</b>
+<br>
+置顶公告发送(实时变化): <br><input type="text" id="message" value=""/>
+<input type="button" value="send" id="butt_send"/>
+<br><br>设置用户名过滤：<br>
+<input type="text" id="blackword" value=""/>
+<input type="button" value="send" id="butt_bw"/>
+<div id="blackwords"></div>
+</div>
+
+
+<div id="onlineUser" class="wind">
+<b>在线用户列表:</b>	
+<!--系统ID:<span id="onlineClientID"></span>
+	客户端IP:<span id="onlineClientIP"></span>-->
+<ul id="onlinelists">
+</ul>
+</div>
+
+<div id="forbiddenUser" class="wind">
+<b>被禁言IP名单:</b>
+<ul id="forbiddenlists">
+</ul>
+</div>
+
+
+</body>
+</html>

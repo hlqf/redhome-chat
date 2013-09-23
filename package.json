@@ -1,0 +1,14 @@
+{
+  "name": "redhome-chatroom",
+  "version": "2.0.0",
+  "description": "RedhomeStudio at Hangzhou Dianzi University, http://bbs.redhome.cc",
+  "keywords": [ "redhome", "nodejs", "chatroom" ],
+  "author": "hlqf <daishengxiang@gmail.com> http://www.hlqf.net",
+  "dependencies": {
+    "socket.io": *,
+    "express": "2.x",
+    "mime": *
+  },
+  "main": "server.js",
+  "engines": { "node": "0.8.x" }
+}
